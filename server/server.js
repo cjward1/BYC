@@ -19,11 +19,8 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-// Ensure data directory exists
-mkdirSync(dirname(config.database.path), { recursive: true });
-
-// Initialize database
-initDatabase();
+// Initialize database (now async)
+await initDatabase();
 
 // Middleware
 app.use(cors({
