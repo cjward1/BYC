@@ -3,11 +3,109 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bordentown Yacht Club Dock Planner</title>
+    <title>Bordentown Yacht Club Dock Manager</title>
     <link rel="stylesheet" href="src/styles.css" />
+    <style>
+      .landing-container {
+        max-width: 800px;
+        margin: 4rem auto;
+        padding: 2rem;
+        text-align: center;
+      }
+      .portal-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+      .portal-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .portal-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      }
+      .portal-card h2 {
+        color: #0d5aa7;
+        margin-bottom: 1rem;
+      }
+      .portal-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+      }
+      .portal-card a {
+        display: inline-block;
+        padding: 0.75rem 2rem;
+        background: #0d5aa7;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: background 0.2s;
+      }
+      .portal-card a:hover {
+        background: #094580;
+      }
+      .features {
+        text-align: left;
+        margin-top: 3rem;
+        background: #f9f9f9;
+        padding: 2rem;
+        border-radius: 8px;
+      }
+      .features ul {
+        list-style: none;
+        padding: 0;
+      }
+      .features li {
+        padding: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+      .features li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #0d5aa7;
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="src/main.js"></script>
+    <div class="landing-container">
+      <h1>Bordentown Yacht Club</h1>
+      <h2 style="color: #666; font-weight: normal;">Dock Management System</h2>
+
+      <div class="portal-cards">
+        <div class="portal-card">
+          <h2>Member Portal</h2>
+          <p>Submit your dock application and view your assignment status.</p>
+          <a href="/member">Member Login</a>
+        </div>
+
+        <div class="portal-card">
+          <h2>Rear Commodore Portal</h2>
+          <p>Manage applications, compute optimal plans, and run the bumping party.</p>
+          <a href="/admin">Admin Login</a>
+        </div>
+      </div>
+
+      <div class="features">
+        <h3>Features</h3>
+        <ul>
+          <li>Annual dock application process with database persistence</li>
+          <li>Member self-service portal for application submission</li>
+          <li>Automatic optimal dock allocation using dynamic programming</li>
+          <li>Interactive bumping party process with seniority-based selection</li>
+          <li>Role-based access control (Members and Rear Commodore)</li>
+          <li>Complete application and assignment tracking</li>
+          <li>Season management with configurable application periods</li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
