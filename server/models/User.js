@@ -1,44 +1,74 @@
-import { getDatabase } from '../database/db.js';
-import bcrypt from 'bcrypt';
+import { getDatabase, saveDatabase } from '../database/db.js';
+import bcrypt from 'bcryptjs';
 
 export class User {
   static findByUsername(username) {
     const db = getDatabase();
-    const stmt = db.prepare('SELECT * FROM users WHERE username = ?');
-    return stmt.get(username);
+    const result = db.exec('SELECT * FROM users WHERE username = ?', [username]);
+
+    if (!result.length || !result[0].values.length) return null;
+
+    const columns = result[0].columns;
+    const values = result[0].values[0];
+    const row = {};
+    columns.forEach((col, idx) => {
+      row[col] = values[idx];
+    });
+    return row;
   }
 
   static findById(id) {
     const db = getDatabase();
-    const stmt = db.prepare('SELECT * FROM users WHERE id = ?');
-    return stmt.get(id);
+    const result = db.exec('SELECT * FROM users WHERE id = ?', [id]);
+
+    if (!result.length || !result[0].values.length) return null;
+
+    const columns = result[0].columns;
+    const values = result[0].values[0];
+    const row = {};
+    columns.forEach((col, idx) => {
+      row[col] = values[idx];
+    });
+    return row;
   }
 
   static findBySeniority(seniorityNumber) {
     const db = getDatabase();
-    const stmt = db.prepare('SELECT * FROM users WHERE seniority_number = ?');
-    return stmt.get(seniorityNumber);
+    const result = db.exec('SELECT * FROM users WHERE seniority_number = ?', [seniorityNumber]);
+
+    if (!result.length || !result[0].values.length) return null;
+
+    const columns = result[0].columns;
+    const values = result[0].values[0];
+    const row = {};
+    columns.forEach((col, idx) => {
+      row[col] = values[idx];
+    });
+    return row;
   }
 
   static async create(userData) {
     const db = getDatabase();
     const passwordHash = await bcrypt.hash(userData.password, 10);
 
-    const stmt = db.prepare(`
+    db.run(`
       INSERT INTO users (username, password_hash, email, full_name, seniority_number, role)
       VALUES (?, ?, ?, ?, ?, ?)
-    `);
-
-    const result = stmt.run(
+    `, [
       userData.username,
       passwordHash,
       userData.email,
       userData.fullName,
       userData.seniorityNumber,
       userData.role || 'member'
-    );
+    ]);
 
-    return User.findById(result.lastInsertRowid);
+    saveDatabase();
+
+    const result = db.exec('SELECT last_insert_rowid() as id');
+    const newId = result[0].values[0][0];
+
+    return User.findById(newId);
   }
 
   static async verifyPassword(username, password) {
@@ -59,8 +89,18 @@ export class User {
 
   static getAll() {
     const db = getDatabase();
-    const stmt = db.prepare('SELECT id, username, email, full_name, seniority_number, role, created_at FROM users ORDER BY seniority_number');
-    return stmt.all();
+    const result = db.exec('SELECT id, username, email, full_name, seniority_number, role, created_at FROM users ORDER BY seniority_number');
+
+    if (!result.length || !result[0].values.length) return [];
+
+    const columns = result[0].columns;
+    return result[0].values.map(values => {
+      const row = {};
+      columns.forEach((col, idx) => {
+        row[col] = values[idx];
+      });
+      return row;
+    });
   }
 
   static update(id, updates) {
@@ -84,11 +124,9 @@ export class User {
     fields.push('updated_at = CURRENT_TIMESTAMP');
     values.push(id);
 
-    const stmt = db.prepare(`
-      UPDATE users SET ${fields.join(', ')} WHERE id = ?
-    `);
+    db.run(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values);
+    saveDatabase();
 
-    stmt.run(...values);
     return User.findById(id);
   }
 
@@ -96,11 +134,9 @@ export class User {
     const db = getDatabase();
     const passwordHash = await bcrypt.hash(newPassword, 10);
 
-    const stmt = db.prepare(`
-      UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-    `);
+    db.run(`UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`, [passwordHash, id]);
+    saveDatabase();
 
-    stmt.run(passwordHash, id);
     return true;
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "byc-dock-manager",
+  "version": "1.0.0",
+  "description": "Bordentown Yacht Club Dock Management System",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "cd server && node server.js",
+    "postinstall": "cd server && npm install && npm run init-db"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cjward1/BYC.git"
+  },
+  "keywords": ["yacht", "dock", "management"],
+  "author": "Bordentown Yacht Club",
+  "license": "ISC"
+}

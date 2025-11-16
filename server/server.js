@@ -19,11 +19,8 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-// Ensure data directory exists
-mkdirSync(dirname(config.database.path), { recursive: true });
-
-// Initialize database
-initDatabase();
+// Initialize database (now async)
+await initDatabase();
 
 // Middleware
 app.use(cors({
@@ -39,9 +36,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: config.isProduction,
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: config.isProduction ? 'none' : 'lax'
   }
 }));
 
