@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rear Commodore Portal - BYC Dock Manager</title>
+  <link rel="stylesheet" href="src/styles.css" />
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .login-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .error-message {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .success-message {
+      color: #2e7d32;
+      background: #e8f5e9;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 2rem;
+    }
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-bottom: -2px;
+    }
+    .tab.active {
+      border-bottom-color: #0d5aa7;
+      color: #0d5aa7;
+      font-weight: 500;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .stat-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      color: #0d5aa7;
+    }
+    .stat-card p {
+      margin: 0;
+      color: #666;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="login-container">
+      <h1>Rear Commodore Login</h1>
+      <div id="message-container"></div>
+      <form class="login-form" id="login-form">
+        <label>
+          Username
+          <input type="text" name="username" required autocomplete="username" />
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" required autocomplete="current-password" />
+        </label>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+  <script type="module" src="src/admin.js"></script>
+</body>
+</html>
